@@ -1,0 +1,830 @@
+sil_stage canonical
+
+import Builtin
+import Swift
+import SwiftShims
+
+import Foundation
+
+protocol Greetable {
+  func sayHi()
+}
+
+extension Greetable {
+  func sayHi()
+}
+
+func greetings(greeter: Greetable)
+
+class Person {
+  @objc deinit
+  init()
+}
+
+extension Person : Greetable {
+  @objc dynamic func sayHi()
+}
+
+@_inheritsConvenienceInitializers class LoudPerson : Person {
+  override dynamic func sayHi()
+  override init()
+  @objc deinit
+}
+
+@_inheritsConvenienceInitializers class GentlePerson : Person {
+  override dynamic func sayHi()
+  override init()
+  @objc deinit
+}
+
+class Cat {
+  @objc deinit
+  init()
+}
+
+extension Cat : Greetable {
+  @objc dynamic func sayHi()
+}
+
+@_inheritsConvenienceInitializers class LoudCat : Cat {
+  override dynamic func sayHi()
+  override init()
+  @objc deinit
+}
+
+// main
+sil @main : $@convention(c) (Int32, UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>) -> Int32 {
+bb0(%0 : $Int32, %1 : $UnsafeMutablePointer<Optional<UnsafeMutablePointer<Int8>>>):
+  %2 = alloc_stack $Greetable                     // users: %11, %10, %9, %6
+  %3 = metatype $@thick Person.Type               // user: %5
+  // function_ref Person.__allocating_init()
+  %4 = function_ref @$s26Greetable_extension_double6PersonCACycfC : $@convention(method) (@thick Person.Type) -> @owned Person // user: %5
+  %5 = apply %4(%3) : $@convention(method) (@thick Person.Type) -> @owned Person // user: %7
+  %6 = init_existential_addr %2 : $*Greetable, $Person // user: %7
+  store %5 to %6 : $*Person                       // id: %7
+  // function_ref greetings(greeter:)
+  %8 = function_ref @$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF : $@convention(thin) (@in_guaranteed Greetable) -> () // user: %9
+  %9 = apply %8(%2) : $@convention(thin) (@in_guaranteed Greetable) -> ()
+  destroy_addr %2 : $*Greetable                   // id: %10
+  dealloc_stack %2 : $*Greetable                  // id: %11
+  %12 = alloc_stack $Greetable                    // users: %21, %20, %19, %16
+  %13 = metatype $@thick LoudPerson.Type          // user: %15
+  // function_ref LoudPerson.__allocating_init()
+  %14 = function_ref @$s26Greetable_extension_double10LoudPersonCACycfC : $@convention(method) (@thick LoudPerson.Type) -> @owned LoudPerson // user: %15
+  %15 = apply %14(%13) : $@convention(method) (@thick LoudPerson.Type) -> @owned LoudPerson // user: %17
+  %16 = init_existential_addr %12 : $*Greetable, $LoudPerson // user: %17
+  store %15 to %16 : $*LoudPerson                 // id: %17
+  // function_ref greetings(greeter:)
+  %18 = function_ref @$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF : $@convention(thin) (@in_guaranteed Greetable) -> () // user: %19
+  %19 = apply %18(%12) : $@convention(thin) (@in_guaranteed Greetable) -> ()
+  destroy_addr %12 : $*Greetable                  // id: %20
+  dealloc_stack %12 : $*Greetable                 // id: %21
+  %22 = alloc_stack $Greetable                    // users: %31, %30, %29, %26
+  %23 = metatype $@thick Cat.Type                 // user: %25
+  // function_ref Cat.__allocating_init()
+  %24 = function_ref @$s26Greetable_extension_double3CatCACycfC : $@convention(method) (@thick Cat.Type) -> @owned Cat // user: %25
+  %25 = apply %24(%23) : $@convention(method) (@thick Cat.Type) -> @owned Cat // user: %27
+  %26 = init_existential_addr %22 : $*Greetable, $Cat // user: %27
+  store %25 to %26 : $*Cat                        // id: %27
+  // function_ref greetings(greeter:)
+  %28 = function_ref @$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF : $@convention(thin) (@in_guaranteed Greetable) -> () // user: %29
+  %29 = apply %28(%22) : $@convention(thin) (@in_guaranteed Greetable) -> ()
+  destroy_addr %22 : $*Greetable                  // id: %30
+  dealloc_stack %22 : $*Greetable                 // id: %31
+  %32 = alloc_stack $Greetable                    // users: %41, %40, %39, %36
+  %33 = metatype $@thick LoudCat.Type             // user: %35
+  // function_ref LoudCat.__allocating_init()
+  %34 = function_ref @$s26Greetable_extension_double7LoudCatCACycfC : $@convention(method) (@thick LoudCat.Type) -> @owned LoudCat // user: %35
+  %35 = apply %34(%33) : $@convention(method) (@thick LoudCat.Type) -> @owned LoudCat // user: %37
+  %36 = init_existential_addr %32 : $*Greetable, $LoudCat // user: %37
+  store %35 to %36 : $*LoudCat                    // id: %37
+  // function_ref greetings(greeter:)
+  %38 = function_ref @$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF : $@convention(thin) (@in_guaranteed Greetable) -> () // user: %39
+  %39 = apply %38(%32) : $@convention(thin) (@in_guaranteed Greetable) -> ()
+  destroy_addr %32 : $*Greetable                  // id: %40
+  dealloc_stack %32 : $*Greetable                 // id: %41
+  %42 = integer_literal $Builtin.Int32, 0         // user: %43
+  %43 = struct $Int32 (%42 : $Builtin.Int32)      // user: %44
+  return %43 : $Int32                             // id: %44
+} // end sil function 'main'
+
+// Greetable.sayHi()
+sil hidden @$s26Greetable_extension_double0A0PAAE5sayHiyyF : $@convention(method) <Self where Self : Greetable> (@in_guaranteed Self) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $*Self):
+  debug_value_addr %0 : $*Self, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "Hello"                // user: %13
+  %9 = integer_literal $Builtin.Word, 5           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double0A0PAAE5sayHiyyF'
+
+// _allocateUninitializedArray<A>(_:)
+sil [always_inline] [_semantics "array.uninitialized_intrinsic"] @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer)
+
+// String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+sil [always_inline] [readonly] [_semantics "string.makeUTF8"] @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String
+
+// _finalizeUninitializedArray<A>(_:)
+sil shared_external [readnone] [_semantics "array.finalize_intrinsic"] @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <Element> (@owned Array<Element>) -> @owned Array<Element> {
+// %0                                             // user: %2
+bb0(%0 : $Array<Element>):
+  %1 = alloc_stack $Array<Element>                // users: %6, %5, %4, %2
+  store %0 to %1 : $*Array<Element>               // id: %2
+  // function_ref Array._endMutation()
+  %3 = function_ref @$sSa12_endMutationyyF : $@convention(method) <τ_0_0> (@inout Array<τ_0_0>) -> () // user: %4
+  %4 = apply %3<Element>(%1) : $@convention(method) <τ_0_0> (@inout Array<τ_0_0>) -> ()
+  %5 = load %1 : $*Array<Element>                 // user: %7
+  dealloc_stack %1 : $*Array<Element>             // id: %6
+  return %5 : $Array<Element>                     // id: %7
+} // end sil function '$ss27_finalizeUninitializedArrayySayxGABnlF'
+
+// default argument 1 of print(_:separator:terminator:)
+sil shared_external @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String {
+bb0:
+  %0 = string_literal utf8 " "                    // user: %5
+  %1 = integer_literal $Builtin.Word, 1           // user: %5
+  %2 = integer_literal $Builtin.Int1, -1          // user: %5
+  %3 = metatype $@thin String.Type                // user: %5
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %4 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %5
+  %5 = apply %4(%0, %1, %2, %3) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %6
+  return %5 : $String                             // id: %6
+} // end sil function '$ss5print_9separator10terminatoryypd_S2StFfA0_'
+
+// default argument 2 of print(_:separator:terminator:)
+sil shared_external @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String {
+bb0:
+  %0 = string_literal utf8 "\n"                   // user: %5
+  %1 = integer_literal $Builtin.Word, 1           // user: %5
+  %2 = integer_literal $Builtin.Int1, -1          // user: %5
+  %3 = metatype $@thin String.Type                // user: %5
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %4 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %5
+  %5 = apply %4(%0, %1, %2, %3) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %6
+  return %5 : $String                             // id: %6
+} // end sil function '$ss5print_9separator10terminatoryypd_S2StFfA1_'
+
+// print(_:separator:terminator:)
+sil @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+
+// greetings(greeter:)
+sil hidden @$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF : $@convention(thin) (@in_guaranteed Greetable) -> () {
+// %0 "greeter"                                   // users: %2, %1
+bb0(%0 : $*Greetable):
+  debug_value_addr %0 : $*Greetable, let, name "greeter", argno 1 // id: %1
+  %2 = open_existential_addr immutable_access %0 : $*Greetable to $*@opened("3A78C90C-534F-11EC-BFAA-A45E60E0A8B3") Greetable // users: %4, %4, %3
+  %3 = witness_method $@opened("3A78C90C-534F-11EC-BFAA-A45E60E0A8B3") Greetable, #Greetable.sayHi : <Self where Self : Greetable> (Self) -> () -> (), %2 : $*@opened("3A78C90C-534F-11EC-BFAA-A45E60E0A8B3") Greetable : $@convention(witness_method: Greetable) <τ_0_0 where τ_0_0 : Greetable> (@in_guaranteed τ_0_0) -> () // type-defs: %2; user: %4
+  %4 = apply %3<@opened("3A78C90C-534F-11EC-BFAA-A45E60E0A8B3") Greetable>(%2) : $@convention(witness_method: Greetable) <τ_0_0 where τ_0_0 : Greetable> (@in_guaranteed τ_0_0) -> () // type-defs: %2
+  %5 = tuple ()                                   // user: %6
+  return %5 : $()                                 // id: %6
+} // end sil function '$s26Greetable_extension_double9greetings7greeteryAA0A0_p_tF'
+
+// Person.deinit
+sil hidden @$s26Greetable_extension_double6PersonCfd : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $Person):
+  debug_value %0 : $Person, let, name "self", argno 1 // id: %1
+  %2 = unchecked_ref_cast %0 : $Person to $Builtin.NativeObject // user: %3
+  return %2 : $Builtin.NativeObject               // id: %3
+} // end sil function '$s26Greetable_extension_double6PersonCfd'
+
+// Person.__deallocating_deinit
+sil hidden @$s26Greetable_extension_double6PersonCfD : $@convention(method) (@owned Person) -> () {
+// %0 "self"                                      // users: %3, %1
+bb0(%0 : $Person):
+  debug_value %0 : $Person, let, name "self", argno 1 // id: %1
+  // function_ref Person.deinit
+  %2 = function_ref @$s26Greetable_extension_double6PersonCfd : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // user: %4
+  %4 = unchecked_ref_cast %3 : $Builtin.NativeObject to $Person // user: %5
+  dealloc_ref %4 : $Person                        // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function '$s26Greetable_extension_double6PersonCfD'
+
+// Person.__allocating_init()
+sil hidden [exact_self_class] @$s26Greetable_extension_double6PersonCACycfC : $@convention(method) (@thick Person.Type) -> @owned Person {
+// %0 "$metatype"
+bb0(%0 : $@thick Person.Type):
+  %1 = alloc_ref $Person                          // user: %3
+  // function_ref Person.init()
+  %2 = function_ref @$s26Greetable_extension_double6PersonCACycfc : $@convention(method) (@owned Person) -> @owned Person // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned Person) -> @owned Person // user: %4
+  return %3 : $Person                             // id: %4
+} // end sil function '$s26Greetable_extension_double6PersonCACycfC'
+
+// Person.init()
+sil hidden @$s26Greetable_extension_double6PersonCACycfc : $@convention(method) (@owned Person) -> @owned Person {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $Person):
+  debug_value %0 : $Person, let, name "self", argno 1 // id: %1
+  return %0 : $Person                             // id: %2
+} // end sil function '$s26Greetable_extension_double6PersonCACycfc'
+
+// Person.sayHi()
+sil hidden @$s26Greetable_extension_double6PersonC5sayHiyyF : $@convention(method) (@guaranteed Person) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $Person):
+  debug_value %0 : $Person, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "hello"                // user: %13
+  %9 = integer_literal $Builtin.Word, 5           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double6PersonC5sayHiyyF'
+
+// @objc Person.sayHi()
+sil hidden [thunk] @$s26Greetable_extension_double6PersonC5sayHiyyFTo : $@convention(objc_method) (Person) -> () {
+// %0                                             // users: %4, %3, %1
+bb0(%0 : $Person):
+  strong_retain %0 : $Person                      // id: %1
+  // function_ref Person.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double6PersonC5sayHiyyF : $@convention(method) (@guaranteed Person) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed Person) -> () // user: %5
+  strong_release %0 : $Person                     // id: %4
+  return %3 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double6PersonC5sayHiyyFTo'
+
+// protocol witness for Greetable.sayHi() in conformance Person
+sil private [transparent] [thunk] @$s26Greetable_extension_double6PersonCAA0A0A2aDP5sayHiyyFTW : $@convention(witness_method: Greetable) (@in_guaranteed Person) -> () {
+// %0                                             // user: %1
+bb0(%0 : $*Person):
+  %1 = load %0 : $*Person                         // user: %3
+  // function_ref dynamic Person.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double6PersonC5sayHiyyFTD : $@convention(method) (@guaranteed Person) -> () // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@guaranteed Person) -> ()
+  %4 = tuple ()                                   // user: %5
+  return %4 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double6PersonCAA0A0A2aDP5sayHiyyFTW'
+
+// dynamic Person.sayHi()
+sil shared [transparent] [thunk] @$s26Greetable_extension_double6PersonC5sayHiyyFTD : $@convention(method) (@guaranteed Person) -> () {
+// %0 "self"                                      // users: %5, %2, %3, %1
+bb0(%0 : $Person):
+  strong_retain %0 : $Person                      // id: %1
+  %2 = objc_method %0 : $Person, #Person.sayHi!foreign : (Person) -> () -> (), $@convention(objc_method) (Person) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(objc_method) (Person) -> ()
+  %4 = tuple ()                                   // user: %6
+  strong_release %0 : $Person                     // id: %5
+  return %4 : $()                                 // id: %6
+} // end sil function '$s26Greetable_extension_double6PersonC5sayHiyyFTD'
+
+// LoudPerson.sayHi()
+sil hidden @$s26Greetable_extension_double10LoudPersonC5sayHiyyF : $@convention(method) (@guaranteed LoudPerson) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $LoudPerson):
+  debug_value %0 : $LoudPerson, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "HELLO"                // user: %13
+  %9 = integer_literal $Builtin.Word, 5           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double10LoudPersonC5sayHiyyF'
+
+// @objc LoudPerson.sayHi()
+sil hidden [thunk] @$s26Greetable_extension_double10LoudPersonC5sayHiyyFTo : $@convention(objc_method) (LoudPerson) -> () {
+// %0                                             // users: %4, %3, %1
+bb0(%0 : $LoudPerson):
+  strong_retain %0 : $LoudPerson                  // id: %1
+  // function_ref LoudPerson.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double10LoudPersonC5sayHiyyF : $@convention(method) (@guaranteed LoudPerson) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed LoudPerson) -> () // user: %5
+  strong_release %0 : $LoudPerson                 // id: %4
+  return %3 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double10LoudPersonC5sayHiyyFTo'
+
+// LoudPerson.__allocating_init()
+sil hidden [exact_self_class] @$s26Greetable_extension_double10LoudPersonCACycfC : $@convention(method) (@thick LoudPerson.Type) -> @owned LoudPerson {
+// %0 "$metatype"
+bb0(%0 : $@thick LoudPerson.Type):
+  %1 = alloc_ref $LoudPerson                      // user: %3
+  // function_ref LoudPerson.init()
+  %2 = function_ref @$s26Greetable_extension_double10LoudPersonCACycfc : $@convention(method) (@owned LoudPerson) -> @owned LoudPerson // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned LoudPerson) -> @owned LoudPerson // user: %4
+  return %3 : $LoudPerson                         // id: %4
+} // end sil function '$s26Greetable_extension_double10LoudPersonCACycfC'
+
+// LoudPerson.init()
+sil hidden @$s26Greetable_extension_double10LoudPersonCACycfc : $@convention(method) (@owned LoudPerson) -> @owned LoudPerson {
+// %0 "self"                                      // user: %2
+bb0(%0 : $LoudPerson):
+  %1 = alloc_stack $LoudPerson, let, name "self"  // users: %9, %3, %2, %10, %11
+  store %0 to %1 : $*LoudPerson                   // id: %2
+  %3 = load %1 : $*LoudPerson                     // user: %4
+  %4 = upcast %3 : $LoudPerson to $Person         // user: %6
+  // function_ref Person.init()
+  %5 = function_ref @$s26Greetable_extension_double6PersonCACycfc : $@convention(method) (@owned Person) -> @owned Person // user: %6
+  %6 = apply %5(%4) : $@convention(method) (@owned Person) -> @owned Person // user: %7
+  %7 = unchecked_ref_cast %6 : $Person to $LoudPerson // users: %9, %12, %8
+  strong_retain %7 : $LoudPerson                  // id: %8
+  store %7 to %1 : $*LoudPerson                   // id: %9
+  destroy_addr %1 : $*LoudPerson                  // id: %10
+  dealloc_stack %1 : $*LoudPerson                 // id: %11
+  return %7 : $LoudPerson                         // id: %12
+} // end sil function '$s26Greetable_extension_double10LoudPersonCACycfc'
+
+// LoudPerson.deinit
+sil hidden @$s26Greetable_extension_double10LoudPersonCfd : $@convention(method) (@guaranteed LoudPerson) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $LoudPerson):
+  debug_value %0 : $LoudPerson, let, name "self", argno 1 // id: %1
+  %2 = upcast %0 : $LoudPerson to $Person         // user: %4
+  // function_ref Person.deinit
+  %3 = function_ref @$s26Greetable_extension_double6PersonCfd : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // users: %5, %6
+  %5 = unchecked_ref_cast %4 : $Builtin.NativeObject to $LoudPerson
+  return %4 : $Builtin.NativeObject               // id: %6
+} // end sil function '$s26Greetable_extension_double10LoudPersonCfd'
+
+// LoudPerson.__deallocating_deinit
+sil hidden @$s26Greetable_extension_double10LoudPersonCfD : $@convention(method) (@owned LoudPerson) -> () {
+// %0 "self"                                      // users: %3, %1
+bb0(%0 : $LoudPerson):
+  debug_value %0 : $LoudPerson, let, name "self", argno 1 // id: %1
+  // function_ref LoudPerson.deinit
+  %2 = function_ref @$s26Greetable_extension_double10LoudPersonCfd : $@convention(method) (@guaranteed LoudPerson) -> @owned Builtin.NativeObject // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed LoudPerson) -> @owned Builtin.NativeObject // user: %4
+  %4 = unchecked_ref_cast %3 : $Builtin.NativeObject to $LoudPerson // user: %5
+  dealloc_ref %4 : $LoudPerson                    // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function '$s26Greetable_extension_double10LoudPersonCfD'
+
+// GentlePerson.sayHi()
+sil hidden @$s26Greetable_extension_double12GentlePersonC5sayHiyyF : $@convention(method) (@guaranteed GentlePerson) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $GentlePerson):
+  debug_value %0 : $GentlePerson, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "helloha"              // user: %13
+  %9 = integer_literal $Builtin.Word, 7           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double12GentlePersonC5sayHiyyF'
+
+// @objc GentlePerson.sayHi()
+sil hidden [thunk] @$s26Greetable_extension_double12GentlePersonC5sayHiyyFTo : $@convention(objc_method) (GentlePerson) -> () {
+// %0                                             // users: %4, %3, %1
+bb0(%0 : $GentlePerson):
+  strong_retain %0 : $GentlePerson                // id: %1
+  // function_ref GentlePerson.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double12GentlePersonC5sayHiyyF : $@convention(method) (@guaranteed GentlePerson) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed GentlePerson) -> () // user: %5
+  strong_release %0 : $GentlePerson               // id: %4
+  return %3 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double12GentlePersonC5sayHiyyFTo'
+
+// GentlePerson.__allocating_init()
+sil hidden [exact_self_class] @$s26Greetable_extension_double12GentlePersonCACycfC : $@convention(method) (@thick GentlePerson.Type) -> @owned GentlePerson {
+// %0 "$metatype"
+bb0(%0 : $@thick GentlePerson.Type):
+  %1 = alloc_ref $GentlePerson                    // user: %3
+  // function_ref GentlePerson.init()
+  %2 = function_ref @$s26Greetable_extension_double12GentlePersonCACycfc : $@convention(method) (@owned GentlePerson) -> @owned GentlePerson // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned GentlePerson) -> @owned GentlePerson // user: %4
+  return %3 : $GentlePerson                       // id: %4
+} // end sil function '$s26Greetable_extension_double12GentlePersonCACycfC'
+
+// GentlePerson.init()
+sil hidden @$s26Greetable_extension_double12GentlePersonCACycfc : $@convention(method) (@owned GentlePerson) -> @owned GentlePerson {
+// %0 "self"                                      // user: %2
+bb0(%0 : $GentlePerson):
+  %1 = alloc_stack $GentlePerson, let, name "self" // users: %9, %3, %2, %10, %11
+  store %0 to %1 : $*GentlePerson                 // id: %2
+  %3 = load %1 : $*GentlePerson                   // user: %4
+  %4 = upcast %3 : $GentlePerson to $Person       // user: %6
+  // function_ref Person.init()
+  %5 = function_ref @$s26Greetable_extension_double6PersonCACycfc : $@convention(method) (@owned Person) -> @owned Person // user: %6
+  %6 = apply %5(%4) : $@convention(method) (@owned Person) -> @owned Person // user: %7
+  %7 = unchecked_ref_cast %6 : $Person to $GentlePerson // users: %9, %12, %8
+  strong_retain %7 : $GentlePerson                // id: %8
+  store %7 to %1 : $*GentlePerson                 // id: %9
+  destroy_addr %1 : $*GentlePerson                // id: %10
+  dealloc_stack %1 : $*GentlePerson               // id: %11
+  return %7 : $GentlePerson                       // id: %12
+} // end sil function '$s26Greetable_extension_double12GentlePersonCACycfc'
+
+// GentlePerson.deinit
+sil hidden @$s26Greetable_extension_double12GentlePersonCfd : $@convention(method) (@guaranteed GentlePerson) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $GentlePerson):
+  debug_value %0 : $GentlePerson, let, name "self", argno 1 // id: %1
+  %2 = upcast %0 : $GentlePerson to $Person       // user: %4
+  // function_ref Person.deinit
+  %3 = function_ref @$s26Greetable_extension_double6PersonCfd : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Person) -> @owned Builtin.NativeObject // users: %5, %6
+  %5 = unchecked_ref_cast %4 : $Builtin.NativeObject to $GentlePerson
+  return %4 : $Builtin.NativeObject               // id: %6
+} // end sil function '$s26Greetable_extension_double12GentlePersonCfd'
+
+// GentlePerson.__deallocating_deinit
+sil hidden @$s26Greetable_extension_double12GentlePersonCfD : $@convention(method) (@owned GentlePerson) -> () {
+// %0 "self"                                      // users: %3, %1
+bb0(%0 : $GentlePerson):
+  debug_value %0 : $GentlePerson, let, name "self", argno 1 // id: %1
+  // function_ref GentlePerson.deinit
+  %2 = function_ref @$s26Greetable_extension_double12GentlePersonCfd : $@convention(method) (@guaranteed GentlePerson) -> @owned Builtin.NativeObject // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed GentlePerson) -> @owned Builtin.NativeObject // user: %4
+  %4 = unchecked_ref_cast %3 : $Builtin.NativeObject to $GentlePerson // user: %5
+  dealloc_ref %4 : $GentlePerson                  // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function '$s26Greetable_extension_double12GentlePersonCfD'
+
+// Cat.deinit
+sil hidden @$s26Greetable_extension_double3CatCfd : $@convention(method) (@guaranteed Cat) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $Cat):
+  debug_value %0 : $Cat, let, name "self", argno 1 // id: %1
+  %2 = unchecked_ref_cast %0 : $Cat to $Builtin.NativeObject // user: %3
+  return %2 : $Builtin.NativeObject               // id: %3
+} // end sil function '$s26Greetable_extension_double3CatCfd'
+
+// Cat.__deallocating_deinit
+sil hidden @$s26Greetable_extension_double3CatCfD : $@convention(method) (@owned Cat) -> () {
+// %0 "self"                                      // users: %3, %1
+bb0(%0 : $Cat):
+  debug_value %0 : $Cat, let, name "self", argno 1 // id: %1
+  // function_ref Cat.deinit
+  %2 = function_ref @$s26Greetable_extension_double3CatCfd : $@convention(method) (@guaranteed Cat) -> @owned Builtin.NativeObject // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed Cat) -> @owned Builtin.NativeObject // user: %4
+  %4 = unchecked_ref_cast %3 : $Builtin.NativeObject to $Cat // user: %5
+  dealloc_ref %4 : $Cat                           // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function '$s26Greetable_extension_double3CatCfD'
+
+// Cat.__allocating_init()
+sil hidden [exact_self_class] @$s26Greetable_extension_double3CatCACycfC : $@convention(method) (@thick Cat.Type) -> @owned Cat {
+// %0 "$metatype"
+bb0(%0 : $@thick Cat.Type):
+  %1 = alloc_ref $Cat                             // user: %3
+  // function_ref Cat.init()
+  %2 = function_ref @$s26Greetable_extension_double3CatCACycfc : $@convention(method) (@owned Cat) -> @owned Cat // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned Cat) -> @owned Cat // user: %4
+  return %3 : $Cat                                // id: %4
+} // end sil function '$s26Greetable_extension_double3CatCACycfC'
+
+// Cat.init()
+sil hidden @$s26Greetable_extension_double3CatCACycfc : $@convention(method) (@owned Cat) -> @owned Cat {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $Cat):
+  debug_value %0 : $Cat, let, name "self", argno 1 // id: %1
+  return %0 : $Cat                                // id: %2
+} // end sil function '$s26Greetable_extension_double3CatCACycfc'
+
+// Cat.sayHi()
+sil hidden @$s26Greetable_extension_double3CatC5sayHiyyF : $@convention(method) (@guaranteed Cat) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $Cat):
+  debug_value %0 : $Cat, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "miao"                 // user: %13
+  %9 = integer_literal $Builtin.Word, 4           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double3CatC5sayHiyyF'
+
+// @objc Cat.sayHi()
+sil hidden [thunk] @$s26Greetable_extension_double3CatC5sayHiyyFTo : $@convention(objc_method) (Cat) -> () {
+// %0                                             // users: %4, %3, %1
+bb0(%0 : $Cat):
+  strong_retain %0 : $Cat                         // id: %1
+  // function_ref Cat.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double3CatC5sayHiyyF : $@convention(method) (@guaranteed Cat) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed Cat) -> () // user: %5
+  strong_release %0 : $Cat                        // id: %4
+  return %3 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double3CatC5sayHiyyFTo'
+
+// protocol witness for Greetable.sayHi() in conformance Cat
+sil private [transparent] [thunk] @$s26Greetable_extension_double3CatCAA0A0A2aDP5sayHiyyFTW : $@convention(witness_method: Greetable) (@in_guaranteed Cat) -> () {
+// %0                                             // user: %1
+bb0(%0 : $*Cat):
+  %1 = load %0 : $*Cat                            // user: %3
+  // function_ref dynamic Cat.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double3CatC5sayHiyyFTD : $@convention(method) (@guaranteed Cat) -> () // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@guaranteed Cat) -> ()
+  %4 = tuple ()                                   // user: %5
+  return %4 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double3CatCAA0A0A2aDP5sayHiyyFTW'
+
+// dynamic Cat.sayHi()
+sil shared [transparent] [thunk] @$s26Greetable_extension_double3CatC5sayHiyyFTD : $@convention(method) (@guaranteed Cat) -> () {
+// %0 "self"                                      // users: %5, %2, %3, %1
+bb0(%0 : $Cat):
+  strong_retain %0 : $Cat                         // id: %1
+  %2 = objc_method %0 : $Cat, #Cat.sayHi!foreign : (Cat) -> () -> (), $@convention(objc_method) (Cat) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(objc_method) (Cat) -> ()
+  %4 = tuple ()                                   // user: %6
+  strong_release %0 : $Cat                        // id: %5
+  return %4 : $()                                 // id: %6
+} // end sil function '$s26Greetable_extension_double3CatC5sayHiyyFTD'
+
+// LoudCat.sayHi()
+sil hidden @$s26Greetable_extension_double7LoudCatC5sayHiyyF : $@convention(method) (@guaranteed LoudCat) -> () {
+// %0 "self"                                      // user: %1
+bb0(%0 : $LoudCat):
+  debug_value %0 : $LoudCat, let, name "self", argno 1 // id: %1
+  %2 = integer_literal $Builtin.Word, 1           // user: %4
+  // function_ref _allocateUninitializedArray<A>(_:)
+  %3 = function_ref @$ss27_allocateUninitializedArrayySayxG_BptBwlF : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // user: %4
+  %4 = apply %3<Any>(%2) : $@convention(thin) <τ_0_0> (Builtin.Word) -> (@owned Array<τ_0_0>, Builtin.RawPointer) // users: %6, %5
+  %5 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 0 // user: %17
+  %6 = tuple_extract %4 : $(Array<Any>, Builtin.RawPointer), 1 // user: %7
+  %7 = pointer_to_address %6 : $Builtin.RawPointer to [strict] $*Any // user: %14
+  %8 = string_literal utf8 "MIAO"                 // user: %13
+  %9 = integer_literal $Builtin.Word, 4           // user: %13
+  %10 = integer_literal $Builtin.Int1, -1         // user: %13
+  %11 = metatype $@thin String.Type               // user: %13
+  // function_ref String.init(_builtinStringLiteral:utf8CodeUnitCount:isASCII:)
+  %12 = function_ref @$sSS21_builtinStringLiteral17utf8CodeUnitCount7isASCIISSBp_BwBi1_tcfC : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %13
+  %13 = apply %12(%8, %9, %10, %11) : $@convention(method) (Builtin.RawPointer, Builtin.Word, Builtin.Int1, @thin String.Type) -> @owned String // user: %15
+  %14 = init_existential_addr %7 : $*Any, $String // user: %15
+  store %13 to %14 : $*String                     // id: %15
+  // function_ref _finalizeUninitializedArray<A>(_:)
+  %16 = function_ref @$ss27_finalizeUninitializedArrayySayxGABnlF : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // user: %17
+  %17 = apply %16<Any>(%5) : $@convention(thin) <τ_0_0> (@owned Array<τ_0_0>) -> @owned Array<τ_0_0> // users: %26, %23
+  // function_ref default argument 1 of print(_:separator:terminator:)
+  %18 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA0_ : $@convention(thin) () -> @owned String // user: %19
+  %19 = apply %18() : $@convention(thin) () -> @owned String // users: %25, %23
+  // function_ref default argument 2 of print(_:separator:terminator:)
+  %20 = function_ref @$ss5print_9separator10terminatoryypd_S2StFfA1_ : $@convention(thin) () -> @owned String // user: %21
+  %21 = apply %20() : $@convention(thin) () -> @owned String // users: %24, %23
+  // function_ref print(_:separator:terminator:)
+  %22 = function_ref @$ss5print_9separator10terminatoryypd_S2StF : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> () // user: %23
+  %23 = apply %22(%17, %19, %21) : $@convention(thin) (@guaranteed Array<Any>, @guaranteed String, @guaranteed String) -> ()
+  release_value %21 : $String                     // id: %24
+  release_value %19 : $String                     // id: %25
+  release_value %17 : $Array<Any>                 // id: %26
+  %27 = tuple ()                                  // user: %28
+  return %27 : $()                                // id: %28
+} // end sil function '$s26Greetable_extension_double7LoudCatC5sayHiyyF'
+
+// @objc LoudCat.sayHi()
+sil hidden [thunk] @$s26Greetable_extension_double7LoudCatC5sayHiyyFTo : $@convention(objc_method) (LoudCat) -> () {
+// %0                                             // users: %4, %3, %1
+bb0(%0 : $LoudCat):
+  strong_retain %0 : $LoudCat                     // id: %1
+  // function_ref LoudCat.sayHi()
+  %2 = function_ref @$s26Greetable_extension_double7LoudCatC5sayHiyyF : $@convention(method) (@guaranteed LoudCat) -> () // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed LoudCat) -> () // user: %5
+  strong_release %0 : $LoudCat                    // id: %4
+  return %3 : $()                                 // id: %5
+} // end sil function '$s26Greetable_extension_double7LoudCatC5sayHiyyFTo'
+
+// LoudCat.__allocating_init()
+sil hidden [exact_self_class] @$s26Greetable_extension_double7LoudCatCACycfC : $@convention(method) (@thick LoudCat.Type) -> @owned LoudCat {
+// %0 "$metatype"
+bb0(%0 : $@thick LoudCat.Type):
+  %1 = alloc_ref $LoudCat                         // user: %3
+  // function_ref LoudCat.init()
+  %2 = function_ref @$s26Greetable_extension_double7LoudCatCACycfc : $@convention(method) (@owned LoudCat) -> @owned LoudCat // user: %3
+  %3 = apply %2(%1) : $@convention(method) (@owned LoudCat) -> @owned LoudCat // user: %4
+  return %3 : $LoudCat                            // id: %4
+} // end sil function '$s26Greetable_extension_double7LoudCatCACycfC'
+
+// LoudCat.init()
+sil hidden @$s26Greetable_extension_double7LoudCatCACycfc : $@convention(method) (@owned LoudCat) -> @owned LoudCat {
+// %0 "self"                                      // user: %2
+bb0(%0 : $LoudCat):
+  %1 = alloc_stack $LoudCat, let, name "self"     // users: %9, %3, %2, %10, %11
+  store %0 to %1 : $*LoudCat                      // id: %2
+  %3 = load %1 : $*LoudCat                        // user: %4
+  %4 = upcast %3 : $LoudCat to $Cat               // user: %6
+  // function_ref Cat.init()
+  %5 = function_ref @$s26Greetable_extension_double3CatCACycfc : $@convention(method) (@owned Cat) -> @owned Cat // user: %6
+  %6 = apply %5(%4) : $@convention(method) (@owned Cat) -> @owned Cat // user: %7
+  %7 = unchecked_ref_cast %6 : $Cat to $LoudCat   // users: %9, %12, %8
+  strong_retain %7 : $LoudCat                     // id: %8
+  store %7 to %1 : $*LoudCat                      // id: %9
+  destroy_addr %1 : $*LoudCat                     // id: %10
+  dealloc_stack %1 : $*LoudCat                    // id: %11
+  return %7 : $LoudCat                            // id: %12
+} // end sil function '$s26Greetable_extension_double7LoudCatCACycfc'
+
+// LoudCat.deinit
+sil hidden @$s26Greetable_extension_double7LoudCatCfd : $@convention(method) (@guaranteed LoudCat) -> @owned Builtin.NativeObject {
+// %0 "self"                                      // users: %2, %1
+bb0(%0 : $LoudCat):
+  debug_value %0 : $LoudCat, let, name "self", argno 1 // id: %1
+  %2 = upcast %0 : $LoudCat to $Cat               // user: %4
+  // function_ref Cat.deinit
+  %3 = function_ref @$s26Greetable_extension_double3CatCfd : $@convention(method) (@guaranteed Cat) -> @owned Builtin.NativeObject // user: %4
+  %4 = apply %3(%2) : $@convention(method) (@guaranteed Cat) -> @owned Builtin.NativeObject // users: %5, %6
+  %5 = unchecked_ref_cast %4 : $Builtin.NativeObject to $LoudCat
+  return %4 : $Builtin.NativeObject               // id: %6
+} // end sil function '$s26Greetable_extension_double7LoudCatCfd'
+
+// LoudCat.__deallocating_deinit
+sil hidden @$s26Greetable_extension_double7LoudCatCfD : $@convention(method) (@owned LoudCat) -> () {
+// %0 "self"                                      // users: %3, %1
+bb0(%0 : $LoudCat):
+  debug_value %0 : $LoudCat, let, name "self", argno 1 // id: %1
+  // function_ref LoudCat.deinit
+  %2 = function_ref @$s26Greetable_extension_double7LoudCatCfd : $@convention(method) (@guaranteed LoudCat) -> @owned Builtin.NativeObject // user: %3
+  %3 = apply %2(%0) : $@convention(method) (@guaranteed LoudCat) -> @owned Builtin.NativeObject // user: %4
+  %4 = unchecked_ref_cast %3 : $Builtin.NativeObject to $LoudCat // user: %5
+  dealloc_ref %4 : $LoudCat                       // id: %5
+  %6 = tuple ()                                   // user: %7
+  return %6 : $()                                 // id: %7
+} // end sil function '$s26Greetable_extension_double7LoudCatCfD'
+
+// Array._endMutation()
+sil shared_external [_semantics "array.end_mutation"] @$sSa12_endMutationyyF : $@convention(method) <Element> (@inout Array<Element>) -> () {
+// %0                                             // users: %9, %1
+bb0(%0 : $*Array<Element>):
+  %1 = struct_element_addr %0 : $*Array<Element>, #Array._buffer // user: %2
+  %2 = struct_element_addr %1 : $*_ArrayBuffer<Element>, #_ArrayBuffer._storage // user: %3
+  %3 = struct_element_addr %2 : $*_BridgeStorage<__ContiguousArrayStorageBase>, #_BridgeStorage.rawValue // user: %4
+  %4 = load %3 : $*Builtin.BridgeObject           // user: %5
+  %5 = end_cow_mutation %4 : $Builtin.BridgeObject // user: %6
+  %6 = struct $_BridgeStorage<__ContiguousArrayStorageBase> (%5 : $Builtin.BridgeObject) // user: %7
+  %7 = struct $_ArrayBuffer<Element> (%6 : $_BridgeStorage<__ContiguousArrayStorageBase>) // user: %8
+  %8 = struct $Array<Element> (%7 : $_ArrayBuffer<Element>) // user: %9
+  store %8 to %0 : $*Array<Element>               // id: %9
+  %10 = tuple ()                                  // user: %11
+  return %10 : $()                                // id: %11
+} // end sil function '$sSa12_endMutationyyF'
+
+sil_vtable Person {
+  #Person.init!allocator: (Person.Type) -> () -> Person : @$s26Greetable_extension_double6PersonCACycfC	// Person.__allocating_init()
+  #Person.deinit!deallocator: @$s26Greetable_extension_double6PersonCfD	// Person.__deallocating_deinit
+}
+
+sil_vtable LoudPerson {
+  #Person.init!allocator: (Person.Type) -> () -> Person : @$s26Greetable_extension_double10LoudPersonCACycfC [override]	// LoudPerson.__allocating_init()
+  #LoudPerson.deinit!deallocator: @$s26Greetable_extension_double10LoudPersonCfD	// LoudPerson.__deallocating_deinit
+}
+
+sil_vtable GentlePerson {
+  #Person.init!allocator: (Person.Type) -> () -> Person : @$s26Greetable_extension_double12GentlePersonCACycfC [override]	// GentlePerson.__allocating_init()
+  #GentlePerson.deinit!deallocator: @$s26Greetable_extension_double12GentlePersonCfD	// GentlePerson.__deallocating_deinit
+}
+
+sil_vtable Cat {
+  #Cat.init!allocator: (Cat.Type) -> () -> Cat : @$s26Greetable_extension_double3CatCACycfC	// Cat.__allocating_init()
+  #Cat.deinit!deallocator: @$s26Greetable_extension_double3CatCfD	// Cat.__deallocating_deinit
+}
+
+sil_vtable LoudCat {
+  #Cat.init!allocator: (Cat.Type) -> () -> Cat : @$s26Greetable_extension_double7LoudCatCACycfC [override]	// LoudCat.__allocating_init()
+  #LoudCat.deinit!deallocator: @$s26Greetable_extension_double7LoudCatCfD	// LoudCat.__deallocating_deinit
+}
+
+sil_witness_table hidden Person: Greetable module Greetable_extension_double {
+  method #Greetable.sayHi: <Self where Self : Greetable> (Self) -> () -> () : @$s26Greetable_extension_double6PersonCAA0A0A2aDP5sayHiyyFTW	// protocol witness for Greetable.sayHi() in conformance Person
+}
+
+sil_witness_table hidden Cat: Greetable module Greetable_extension_double {
+  method #Greetable.sayHi: <Self where Self : Greetable> (Self) -> () -> () : @$s26Greetable_extension_double3CatCAA0A0A2aDP5sayHiyyFTW	// protocol witness for Greetable.sayHi() in conformance Cat
+}
+
+
+
+// Mappings from '#fileID' to '#filePath':
+//   'Greetable_extension_double/Greetable_extension_double.swift' => 'Greetable_extension_double.swift'
+
+
